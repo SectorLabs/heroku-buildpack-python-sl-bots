@@ -88,8 +88,8 @@ function pip::install_dependencies() {
 
 	# TODO: Deprecate/sunset this missing requirements file fallback.
  	if [[ -f setup.py ]]; then
-  		if [[ -f "requirements-$SL_BOT.txt" ]]; then
-    			pip_install_command+=(-r "requirements-$SL_BOT.txt")
+  		if [[ -f "requirements-${SL_BOT}.txt" ]]; then
+    			pip_install_command+=(-r "requirements-${SL_BOT}.txt")
                 elif [[ -f requirements.txt ]]; then
 			pip_install_command+=(-r requirements.txt)
   		else
