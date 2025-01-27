@@ -87,11 +87,17 @@ function pip::install_dependencies() {
 	)
 
 	# TODO: Deprecate/sunset this missing requirements file fallback.
-	if [[ -f setup.py && ! -f requirements.txt ]]; then
-		pip_install_command+=(--editable .)
+ 	if [[ -f setup.py ]]; then
+  		if [[ -f "requirements-$SL_BOT.txt" ]]; then
+    			pip_install_command+=(-r "requirements-$SL_BOT.txt")
+                elif [[ -f requirements.txt ]]; then
+			pip_install_command+=(-r requirements.txt)
+  		else
+    			pip_install_command+=(--editable .)
+      		fi
 	else
-		pip_install_command+=(-r requirements.txt)
-	fi
+ 		pip_install_command+=(--editable .)
+   	fi
 
 	# Install test dependencies too when the buildpack is invoked via `bin/test-compile` on Heroku CI.
 	# We install both requirements files at the same time to allow pip to resolve version conflicts.
