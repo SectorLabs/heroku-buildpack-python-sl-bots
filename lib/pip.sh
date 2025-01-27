@@ -86,18 +86,20 @@ function pip::install_dependencies() {
 		install
 	)
 
-	# TODO: Deprecate/sunset this missing requirements file fallback.
- 	if [[ -f setup.py ]]; then
-  		if [[ -f "requirements-${SL_BOT}.txt" ]]; then
-    			pip_install_command+=(-r "requirements-${SL_BOT}.txt")
-                elif [[ -f requirements.txt ]]; then
-			pip_install_command+=(-r requirements.txt)
-  		else
-    			pip_install_command+=(--editable .)
-      		fi
+	output::step "Installing packages for ${SL_BOT} bot..."
+	if [[ -f "requirements-${SL_BOT}.txt" ]]; then
+		pip_install_command+=(-r "requirements-${SL_BOT}.txt")
+	elif [[ -f requirements.txt ]]; then
+		pip_install_command+=(-r requirements.txt)
 	else
- 		pip_install_command+=(--editable .)
-   	fi
+		output::error <<-EOF
+			Error: Unable to install dependencies using pip.
+
+			No matching requirements.txt file was found
+		EOF
+		meta_set "failure_reason" "install-dependencies::pip"
+		exit 1
+	fi
 
 	# Install test dependencies too when the buildpack is invoked via `bin/test-compile` on Heroku CI.
 	# We install both requirements files at the same time to allow pip to resolve version conflicts.
