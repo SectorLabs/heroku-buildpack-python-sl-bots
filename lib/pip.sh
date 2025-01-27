@@ -86,9 +86,9 @@ function pip::install_dependencies() {
 		install
 	)
 
-	output::step "Installing packages for ${SL_BOT} bot..."
-	if [[ -f "requirements-${SL_BOT}.txt" ]]; then
-		pip_install_command+=(-r "requirements-${SL_BOT}.txt")
+	output::step "Installing packages for watcher bot..."
+	if [[ -f requirements-watcher.txt ]]; then
+		pip_install_command+=(-r requirements-watcher.txt)
 	elif [[ -f requirements.txt ]]; then
 		pip_install_command+=(-r requirements.txt)
 	else
