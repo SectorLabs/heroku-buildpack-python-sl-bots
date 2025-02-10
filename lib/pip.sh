@@ -86,6 +86,9 @@ function pip::install_dependencies() {
 		install
 	)
 
+ 	output::step "Installing qgtunnel"
+  	curl https://s3.amazonaws.com/quotaguard/qgtunnel-latest.tar.gz | tar xz
+
 	output::step "Installing packages for watcher bot..."
 	if [[ -f requirements-watcher.txt ]]; then
 		pip_install_command+=(-r requirements-watcher.txt)
